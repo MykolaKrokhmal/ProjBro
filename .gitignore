@@ -1,3 +1,5 @@
+.idea/*
+
 # Compiled class file
 *.class
 
@@ -20,3 +22,13 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+out/production/ProjBro/com (1)/
+out/production/ProjBro/com (2)/
+out/production/ProjBro/com/krokhmal/fromTeachers/
+out/production/ProjBro/com/krokhmal/lessons/
+out/production/ProjBro/com/krokhmal/practice/exerciseCase/
+out/production/ProjBro/com/krokhmal/practice/exerciseFor/
+out/production/ProjBro/com/krokhmal/practice/exerciseIf/
+out/production/ProjBro/com/krokhmal/practice/exerciseMatrix/
+out/production/ProjBro/com/krokhmal/practice/exerciseWhile/
+.idea/
