@@ -23,13 +23,13 @@ public class OperationsWithString {
 
             if (Character.isDigit(value)) digitOffset++;
             else if (digitOffset > 0) {
-                sumOfDigit += Integer.valueOf(content.substring(index - digitOffset, index));
+                sumOfDigit += Integer.parseInt(content.substring(index - digitOffset, index));
                 digitOffset = 0;
             }
         }
 
         if (digitOffset > 0)
-            sumOfDigit += Integer.valueOf(content.substring(content.length() - digitOffset, content.length()));
+            sumOfDigit += Integer.parseInt(content.substring(content.length() - digitOffset, content.length()));
 
         String answer = String.format("Sum of digits in your string is %d.", sumOfDigit);
         System.out.println("----------------------------------------------------------------------------------------");
