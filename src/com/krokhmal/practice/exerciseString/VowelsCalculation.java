@@ -32,7 +32,7 @@ public class VowelsCalculation {
             System.out.println("-------------------------------------------------");
             System.out.print("Answer is: ");
             for (int index = 0; index < vowelsCount.length; index++)
-            System.out.print(vowelsCount[index] + " ");
+                System.out.print(vowelsCount[index] + " ");
         }
         read.close();
 

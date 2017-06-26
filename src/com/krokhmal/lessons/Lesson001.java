@@ -13,6 +13,7 @@ public class Lesson001 {
         y = (x = x + y) - y;
         x = x - y;
 
+        x = x + y - (y = x);
         System.out.print("x = " + x);
         System.out.println("; y = " + y);}
 

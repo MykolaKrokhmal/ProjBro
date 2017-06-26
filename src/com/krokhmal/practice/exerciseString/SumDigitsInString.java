@@ -1,11 +1,11 @@
-package com.krokhmal.practice.exerciseString;
+package com.krokhmal.practice;
 
 import java.util.Scanner;
 
 /**
  * Created by NKrok on 20.06.2017.
  */
-public class OperationsWithString {
+public class SumDigitsInString {
     public static void main(String[] args) {
 
         System.out.print("Enter string with numbers: ");
@@ -23,13 +23,13 @@ public class OperationsWithString {
 
             if (Character.isDigit(value)) digitOffset++;
             else if (digitOffset > 0) {
-                sumOfDigit += Integer.parseInt(content.substring(index - digitOffset, index));
+                sumOfDigit += Integer.valueOf(content.substring(index - digitOffset, index));
                 digitOffset = 0;
             }
         }
 
         if (digitOffset > 0)
-            sumOfDigit += Integer.parseInt(content.substring(content.length() - digitOffset, content.length()));
+            sumOfDigit += Integer.valueOf(content.substring(content.length() - digitOffset, content.length()));
 
         String answer = String.format("Sum of digits in your string is %d.", sumOfDigit);
         System.out.println("----------------------------------------------------------------------------------------");

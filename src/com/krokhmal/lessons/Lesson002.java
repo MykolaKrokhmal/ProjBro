@@ -1,8 +1,6 @@
 package com.krokhmal.lessons;
 
-/**
- * Created by Крохмаль on 20.05.17.
- */
+
 public class Lesson002 {
     public static void main(String[] args) {
         /*****************************************************************************************************************
@@ -41,6 +39,11 @@ public class Lesson002 {
         // когда ее значение парадает в диапазон типа byte.
         final int D = 3;
         b = D; System.out.println("b = " + b);
+        //потеря точности при присвоении int -> float and long -> float and long -> double
+        int n = 123456789;
+        float f1 = n;
+        n = (int)f1;
+        System.out.println("int to float and back " + f1);
 
         // 7
         // Следующие выражения компилятор не проверяет. Просто так решили создатели.
