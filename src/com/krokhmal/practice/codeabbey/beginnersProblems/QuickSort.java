@@ -13,12 +13,15 @@ public class QuickSort {
             array[index] = read.nextInt();
 
 
+    
+
     }
 
     void quickSort(int[] array){
         int pivot = array.length / 2;
 
         for (int index = 0; index < array.length; index++){
+            //if (array[index] > array[pivot])
         }
     }
 }

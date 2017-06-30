@@ -1,5 +1,6 @@
-.idea*/*
-
+.idea/*
+.idea (1)/*
+.idea (2)/*
 # Compiled class file
 *.class
 
@@ -32,3 +33,5 @@ out/production/ProjBro/com/krokhmal/practice/exerciseIf/
 out/production/ProjBro/com/krokhmal/practice/exerciseMatrix/
 out/production/ProjBro/com/krokhmal/practice/exerciseWhile/
 .idea/
+.idea (2)/
+out/production/courses/

@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Lesson007 {
     public static void main(String[] args) {
-        test();
+        exercise9();
     }
 
     public static void exercise8() {
@@ -26,7 +26,7 @@ public class Lesson007 {
 
     }
 
-    public static void test(){
+    public static void test() {
         Scanner read = new Scanner(System.in);
         String word1 = read.nextLine();
         String word2 = read.nextLine();
@@ -45,21 +45,21 @@ public class Lesson007 {
         String testingWord = read.nextLine();
         read.close();
 
-        int testingWordCheckSum = 0;
+        char[] charSet = new char[128];
 
         for (int position = 0; position < testingWord.length(); position++)
-            testingWordCheckSum ^= Character.toLowerCase(testingWord.charAt(position));
+            charSet[testingWord.charAt(position)]++;
 
         int anagramCount = 0;
 
         final int DICTIONARY_WORDS_COUNT = 10;
         String[] dictionary = new String[DICTIONARY_WORDS_COUNT];
-        dictionary[0] = "twyQre"; //anagram 1 to qwerty
+        dictionary[0] = "twyqre"; //anagram 1 to qwerty
         dictionary[1] = "ytrewq"; //anagram 2 to qwerty
         dictionary[2] = "about";
         dictionary[3] = "askIt";
         dictionary[5] = "hello";
-        dictionary[4] = "rETWyq"; //anagram 3 to qwerty
+        dictionary[4] = "retwyq"; //anagram 3 to qwerty
         dictionary[6] = "lesson";
         dictionary[7] = "onless";
         dictionary[8] = "rtyewq"; //anagram 4 to qwerty
@@ -67,14 +67,19 @@ public class Lesson007 {
 
         for (int word = 0; word < dictionary.length; word++) {
 
-            if (testingWord.length() == dictionary[word].length()) {
+            if (testingWord.length() == dictionary[word].length() || testingWord.equals(dictionary[word])) {
 
-                int compareWordCheckSum = 0;
+                char[] compareSet = new char[128];
                 for (char position = 0; position < dictionary[word].length(); position++)
-                    compareWordCheckSum ^= Character.toLowerCase(dictionary[word].charAt(position));
+                    if (charSet[dictionary[word].charAt(position)] == 0) break;
+                    else
+                        compareSet[dictionary[word].charAt(position)]++;
 
-                if (testingWordCheckSum == compareWordCheckSum && !testingWord.equals(dictionary[word]))
-                    anagramCount++;
+                boolean isAnagram = true;
+                for (char position = 0; position < dictionary[word].length(); position++)
+                    if (charSet[dictionary[word].charAt(position)] != compareSet[dictionary[word].charAt(position)])
+                        isAnagram = false;
+                if (isAnagram) anagramCount++;
             }
         }
         String answer = String.format("It is %d anagrams to word %s", anagramCount, testingWord);

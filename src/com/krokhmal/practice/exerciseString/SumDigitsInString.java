@@ -1,37 +1,34 @@
-package com.krokhmal.practice;
+package com.krokhmal.practice.exerciseString;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
-/**
- * Created by NKrok on 20.06.2017.
- */
 public class SumDigitsInString {
     public static void main(String[] args) {
 
         System.out.print("Enter string with numbers: ");
         Scanner read = new Scanner(System.in);
-        String content = read.nextLine();
+        String content = "iuy9 kkjj 865 kk 7 kj3214";//read.nextLine();
         read.close();
+        int sumOfDigits = 0;
+        StringBuilder digitValue = new StringBuilder();
+        char[] symbol = content.toCharArray();
+        System.out.println(Arrays.toString(symbol));
 
-        int sumOfDigit = 0;
-        int digitOffset = 0;
-        char value;
+        for (int index = 0; index < symbol.length; index++) {
 
-        for (int index = 0; index < content.length(); index++) {
-
-            value = content.toCharArray()[index];
-
-            if (Character.isDigit(value)) digitOffset++;
-            else if (digitOffset > 0) {
-                sumOfDigit += Integer.valueOf(content.substring(index - digitOffset, index));
-                digitOffset = 0;
+            if (Character.isDigit(symbol[index])) {
+                digitValue.append(Character.toString(symbol[index]));
+                if (index == symbol.length - 1) sumOfDigits += Integer.valueOf(digitValue.toString());
             }
+            else {
+                if (!digitValue.toString().isEmpty()) sumOfDigits += Integer.valueOf(digitValue.toString());
+                digitValue = new StringBuilder();
+            }
+
         }
 
-        if (digitOffset > 0)
-            sumOfDigit += Integer.valueOf(content.substring(content.length() - digitOffset, content.length()));
-
-        String answer = String.format("Sum of digits in your string is %d.", sumOfDigit);
+        String answer = String.format("Sum of digits in your string is %d.", sumOfDigits);
         System.out.println("----------------------------------------------------------------------------------------");
         System.out.println(answer);
     }
