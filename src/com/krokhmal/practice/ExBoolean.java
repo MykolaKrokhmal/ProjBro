@@ -1,9 +1,7 @@
 package com.krokhmal.practice;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import java.lang.*;
-import java.util.*;
+
 /**
  * Created by NKrok on 25.05.2017.
  */

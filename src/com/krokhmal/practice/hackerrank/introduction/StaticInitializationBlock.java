@@ -1,10 +1,6 @@
 package com.krokhmal.practice.hackerrank.introduction;
 
-import java.io.*;
 import java.util.*;
-import java.text.*;
-import java.math.*;
-import java.util.regex.*;
 
 public class StaticInitializationBlock {
     static int B;

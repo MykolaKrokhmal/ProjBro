@@ -1,7 +1,5 @@
 package com.krokhmal.practice.exerciseArr;
 
-import java.util.Scanner;
-
 /**
  * Created by User on 10.06.2017.
  */

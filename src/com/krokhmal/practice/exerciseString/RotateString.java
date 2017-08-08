@@ -1,7 +1,5 @@
 package com.krokhmal.practice.exerciseString;
 
-import java.net.CacheRequest;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class RotateString {
