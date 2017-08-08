@@ -59,6 +59,9 @@ public class Record {
         setMessage(record);
     }
 
+    public Date getDate(){
+        return new Date(this.date.getTime());
+    }
 
     private void setDate(String date) {
         try {
@@ -132,6 +135,9 @@ public class Record {
         return this.message;
     }
 
+    public Record copy(){
+        return new Record(new Date(this.date.getTime()), this.priority, this.source, this.message);
+    }
 
     public static void main(String[] args) throws ParseException {
         Record r1 = new Record(new Date(), 4, "Nick", "Error message text");
