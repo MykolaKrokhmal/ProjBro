@@ -21,15 +21,15 @@ public class Record {
             throw new IllegalArgumentException("Parameter \"priority\" must be in range 1..4");
 
         if (source == null || source.trim().isEmpty() || source.contains(" "))
-            throw new IllegalArgumentException("Parameter \"source\" must be without spaces, not null and empty");
+            throw new IllegalArgumentException("Parameter \"source\" must be without spaces, not null and not empty");
 
         if (message == null || message.trim().isEmpty() || message.contains(System.lineSeparator()))
             throw new IllegalArgumentException("Parameter \"message\" can not contain line separator, be null or empty");
 
         this.date = new Date(date.getTime());
         this.priority = priority;
-        this.source = source;
-        this.message = message;
+        this.source = source.trim();
+        this.message = message.trim();
     }
 
     public Record(String record) {
@@ -38,6 +38,7 @@ public class Record {
             throw new IllegalArgumentException("Illegal input argument");
 
         record = record.trim();
+
         while(record.contains("  ")){
             record = record.replace("  ", " ");
         }
@@ -47,7 +48,7 @@ public class Record {
         for (int i = 0; i < 4; i++) {
             index = record.indexOf(" ");
             if(index == -1)
-                throw new IllegalArgumentException("Illegal input argument");
+                throw new IllegalArgumentException("Illegal input argument " + i);
             parameter[i] = record.substring(0, index);
             record = record.substring(index).trim();
         }
@@ -65,7 +66,7 @@ public class Record {
 
     private void setDate(String date) {
         try {
-            SimpleDateFormat inputDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            SimpleDateFormat inputDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             inputDate.setLenient(false);
 
             this.date = inputDate.parse(date);
@@ -100,7 +101,11 @@ public class Record {
     }
 
     private String getDateAsString() {
-        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(this.date);
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(this.date);
+    }
+
+    public Integer getPriority(){
+        return this.priority;
     }
 
     private String getPriorityAsString() {
@@ -127,7 +132,7 @@ public class Record {
         return symbol;
     }
 
-    private String getSource() {
+    public String getSource() {
         return this.source;
     }
 
@@ -137,13 +142,5 @@ public class Record {
 
     public Record copy(){
         return new Record(new Date(this.date.getTime()), this.priority, this.source, this.message);
-    }
-
-    public static void main(String[] args) throws ParseException {
-        Record r1 = new Record(new Date(), 4, "Nick", "Error message text");
-        System.out.println(r1.toString());
-
-        Record r2 = new Record("2017-10-30   13:38:50  !!!      FromNick Error   message text  ");
-        System.out.println(r2.toString());
     }
 }
