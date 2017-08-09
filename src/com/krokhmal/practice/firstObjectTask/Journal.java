@@ -1,9 +1,5 @@
 package com.krokhmal.practice.firstObjectTask;
 
-import jdk.nashorn.internal.scripts.JO;
-
-import java.lang.reflect.Array;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -153,7 +149,7 @@ public class Journal {
         return string.toString();
     }
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) {
 
         Journal firstJournal = new Journal();
 
@@ -205,9 +201,9 @@ public class Journal {
         System.out.println(" 6. filter 1st journal by date range from 2017-08-04 00:00:00 to 2017-08-06 00:00:00");
         System.out.println("====================================================================================");
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date fromDate = sdf.parse("2017-08-04 00:00:00");
-        Date toDate = sdf.parse("2017-08-06 00:00:00");
+        Date fromDate = new GregorianCalendar(2017, Calendar.AUGUST, 04).getTime();
+        Date toDate = new GregorianCalendar(2017, Calendar.AUGUST, 06).getTime();
+
         System.out.println(firstJournal.filter(fromDate, toDate).toString());
 
         System.out.println("====================================================================================");
