@@ -2,6 +2,8 @@ package com.krokhmal.practice.firstObjectTask;
 
 import jdk.nashorn.internal.scripts.JO;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
@@ -25,14 +27,6 @@ public class Journal {
             throw new IllegalArgumentException("Parameter can not be null");
 
         for(Record record : j.getRecords()) this.add(record);
-    }
-
-    public void remove(Record r){
-        if(r == null)
-            throw new IllegalArgumentException("Parameter can not be null");
-
-        for (int i = 0; i < this.records.length; i++)
-            if(this.records[i] == r) this.remove(i);
     }
 
     public void remove(int index){
@@ -59,6 +53,14 @@ public class Journal {
         this.records = Arrays.copyOf(this.records, newLength);
     }
 
+    public void remove(Record r){
+        if(r == null)
+            throw new IllegalArgumentException("Parameter can not be null");
+
+        for (int i = 0; i < this.records.length; i++)
+            if(this.records[i] == r) this.remove(i);
+    }
+
     public void removeAll(){
         this.records = new Record[0];
     }
@@ -77,6 +79,9 @@ public class Journal {
     }
 
     public Journal filter(Date fromDate, Date toDate){
+        if(fromDate == null || toDate == null)
+            throw new IllegalArgumentException("Parameters can not be null");
+
         Journal filtered = new Journal();
         long currDate = 0;
         for ( Record record : records) {
@@ -84,7 +89,7 @@ public class Journal {
             if(currDate >= fromDate.getTime() && currDate <= toDate.getTime())
                 filtered.add(record);
         }
-        return new Journal();
+        return filtered;
     }
 
     public void sortByDate(){
@@ -111,7 +116,7 @@ public class Journal {
         return copy;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         Journal firstJournal = new Journal();
 
         System.out.println("=============================================================");
@@ -166,7 +171,10 @@ public class Journal {
         System.out.println(" 6. filter by date range");
         System.out.println("=============================================================");
 
-        System.out.println(Arrays.toString(secondJournal.filter(new Date(), new Date() ).getRecords()));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date fromDate = sdf.parse("2017-08-04 00:00:00");
+        Date toDate = sdf.parse("2017-08-06 00:00:00");
+        System.out.println(Arrays.toString(firstJournal.filter(fromDate, toDate).getRecords()));
 
     }
 }
