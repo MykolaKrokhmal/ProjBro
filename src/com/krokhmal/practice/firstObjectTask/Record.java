@@ -2,6 +2,7 @@ package com.krokhmal.practice.firstObjectTask;
 
 import sun.security.ssl.HandshakeInStream;
 
+import java.rmi.activation.ActivationGroup;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -17,8 +18,7 @@ public class Record {
     private final int LOW_PRIORITY_VALUE    = 2;
     private final int HEIGHT_PRIORITY_VALUE = 3;
     private final int MAX_PRIORITY_VALUE    = 4;
-    private final int ARGUMENTS_COUNT       = 4;
-    private final int NO_SPACE              = -1;
+    private final int MIN_WORDS_COUNT       = 5;
 
     public Record(Date date, int priority, String source, String message) {
         if (date == null)
@@ -44,23 +44,33 @@ public class Record {
         if (record == null || record.trim().isEmpty())
             throw new IllegalArgumentException("Illegal input argument");
 
-        record = record.trim();
+        String[] parameter = parseString(record);
 
-        String[] parameter = new String[ARGUMENTS_COUNT];
-        int index = 0;
-        for (int i = 0; i < ARGUMENTS_COUNT; i++) {
-            index = record.indexOf(" ");
-            if(index == NO_SPACE)
-                throw new IllegalArgumentException("Illegal input argument " + i);
-            parameter[i] = record.substring(0, index);
-            record = record.substring(index).trim();
+        setDate(parameter[0]);
+        setPriority(parameter[1]);
+        setSource(parameter[2]);
+        setMessage(parameter[3]);
+    }
+
+    private String[] parseString(String text){
+        String[] word = text.trim().split("\\s+");
+        if(word.length < MIN_WORDS_COUNT)
+            throw new IllegalArgumentException("Incorrect string format");
+
+        String[] parameter = new String[4];
+
+        parameter[0] = word[0] + " " + word[1];
+        parameter[1] = word[2];
+        parameter[2] = word[3];
+
+        StringBuilder message = new StringBuilder();
+        for (int i = 4; i < word.length; i++) {
+            message.append(word[i]);
+            message.append(" ");
         }
+        parameter[3] = message.toString().trim();
 
-        setDate(parameter[0] + " " + parameter[1]);
-        setPriority(parameter[2]);
-        setSource(parameter[3]);
-
-        setMessage(record);
+        return parameter;
     }
 
     public Date getDate(){
@@ -71,7 +81,6 @@ public class Record {
         try {
             SimpleDateFormat inputDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             inputDate.setLenient(false);
-
             this.date = inputDate.parse(date);
 
         } catch (ParseException exception) {
