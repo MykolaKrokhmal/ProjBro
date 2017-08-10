@@ -9,19 +9,19 @@ import java.util.*;
 public class Journal {
     private Record[] records = {};
 
-    public void add(Record r){
-        if(r == null)
-            throw new IllegalArgumentException("Parameter can not be null");
+    public void add(Record newRecord){
+        if(newRecord == null)
+            throw new IllegalArgumentException("Parameter \"newRecord\" can not be null");
 
         this.records = Arrays.copyOf(this.records, this.records.length + 1);
-        this.records[this.records.length - 1] = r.copy();
+        this.records[this.records.length - 1] = newRecord.clone();
     }
 
-    public void add(Journal j){
-        if(j == null)
-            throw new IllegalArgumentException("Parameter \"j\" can not be null");
+    public void add(Journal newJournal){
+        if(newJournal == null)
+            throw new IllegalArgumentException("Parameter \"newJournal\" can not be null");
 
-        for(Record record : j.records) this.add(record);
+        for(Record record : newJournal.records) this.add(record);
     }
 
     public void remove(int index){
@@ -48,25 +48,25 @@ public class Journal {
         this.records = Arrays.copyOf(this.records, newLength);
     }
 
-    public void remove(Record r){
-        if(r == null)
-            throw new IllegalArgumentException("Parameter \"r\" can not be null");
+    public void remove(Record removeRecord){
+        if(removeRecord == null)
+            throw new IllegalArgumentException("Parameter \"removeRecord\" can not be null");
 
         for (int i = 0; i < this.records.length; i++)
-            if(this.records[i] == r) this.remove(i);
+            if(this.records[i] == removeRecord) this.remove(i);
     }
 
     public void removeAll(){
         this.records = new Record[]{};
     }
 
-    public Journal filter(String s){
-        if(s == null || s.trim().isEmpty())
-            throw new IllegalArgumentException("String is null or empty");
+    public Journal filter(String text){
+        if(text == null || text.trim().isEmpty())
+            throw new IllegalArgumentException("Parameter \"content\" is null or empty");
 
         Journal filtered = new Journal();
         for (Record record : this.records)
-            if(record.toString().contains(s))
+            if(record.toString().contains(text))
                 filtered.add(record);
 
         return filtered;
@@ -90,8 +90,8 @@ public class Journal {
     public void sortByDate(){
         Arrays.sort(this.records, new Comparator<Record>() {
             @Override
-            public int compare(Record o1, Record o2) {
-                return o1.getDate().compareTo(o2.getDate());
+            public int compare(Record firstRecord, Record secondRecord) {
+                return firstRecord.getDate().compareTo(secondRecord.getDate());
             }
         });
     }
@@ -99,12 +99,12 @@ public class Journal {
     public void sortByImportanceDate(){
         Arrays.sort(this.records, new Comparator<Record>() {
             @Override
-            public int compare(Record o1, Record o2) {
-                int priorityCompare = o1.getPriority().compareTo(o2.getPriority());
+            public int compare(Record firstRecord, Record secondRecord) {
+                int priorityCompare = firstRecord.getPriority().compareTo(secondRecord.getPriority());
                 if(priorityCompare != 0)
                     return priorityCompare;
 
-                return o1.getDate().compareTo(o2.getDate());
+                return firstRecord.getDate().compareTo(secondRecord.getDate());
             }
         });
     }
@@ -112,16 +112,16 @@ public class Journal {
     public void sortByImportanceSourceDate(){
         Arrays.sort(this.records, new Comparator<Record>() {
             @Override
-            public int compare(Record o1, Record o2) {
-                int priorityCompare = o1.getPriority().compareTo(o2.getPriority());
+            public int compare(Record firstRecord, Record secondRecord) {
+                int priorityCompare = firstRecord.getPriority().compareTo(secondRecord.getPriority());
                 if(priorityCompare != 0)
                     return priorityCompare;
 
-                int sourceCompare = o1.getSource().compareTo(o2.getSource());
+                int sourceCompare = firstRecord.getSource().compareTo(secondRecord.getSource());
                 if(sourceCompare != 0)
                     return sourceCompare;
 
-                return o1.getDate().compareTo(o2.getDate());
+                return firstRecord.getDate().compareTo(secondRecord.getDate());
             }
         });
     }
@@ -129,12 +129,12 @@ public class Journal {
     public void sortBySourceDate(){
         Arrays.sort(this.records, new Comparator<Record>() {
             @Override
-            public int compare(Record o1, Record o2) {
-                int sourceCompare = o1.getSource().compareTo(o2.getSource());
+            public int compare(Record firstRecord, Record secondRecord) {
+                int sourceCompare = firstRecord.getSource().compareTo(secondRecord.getSource());
                 if(sourceCompare != 0)
                     return sourceCompare;
 
-                return o1.getDate().compareTo(o2.getDate());
+                return firstRecord.getDate().compareTo(secondRecord.getDate());
             }
         });
     }
@@ -142,8 +142,8 @@ public class Journal {
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder("");
-        for (Record r : this.records){
-            string.append(r.toString());
+        for (Record record : this.records){
+            string.append(record.toString());
             string.append("\n");
         }
         return string.toString();
