@@ -1,11 +1,7 @@
 package com.krokhmal.practice.firstObjectTask;
 
-import sun.security.ssl.HandshakeInStream;
-
-import java.rmi.activation.ActivationGroup;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 
 
