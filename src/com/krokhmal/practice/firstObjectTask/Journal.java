@@ -9,12 +9,12 @@ import java.util.*;
 public class Journal {
     private Record[] records = {};
 
-    public void add(Record newRecord){
-        if(newRecord == null)
+    public void add(Record newInstance){
+        if(newInstance == null)
             throw new IllegalArgumentException("Parameter \"newRecord\" can not be null");
 
         this.records = Arrays.copyOf(this.records, this.records.length + 1);
-        this.records[this.records.length - 1] = newRecord.clone();
+        this.records[this.records.length - 1] = new Record(newInstance.toString());
     }
 
     public void add(Journal newJournal){
@@ -156,11 +156,11 @@ public class Journal {
         System.out.println("====================================================================================");
         System.out.println(" 1. First journal filling start");
         System.out.println("====================================================================================");
-        firstJournal.add(new Record("2017-08-04 09:15:09 !!!!! Nick Error1 message text"));
-        firstJournal.add(new Record("2017-08-09 17:34:15 .     Den  Error2 message text"));
-        firstJournal.add(new Record("2017-08-16 12:36:15 !     Nick Error3 message text"));
+        firstJournal.add(new Record("2017-08-04 09:15:09 !!!!! Nick    Error1   message text"));
+        firstJournal.add(new Record("2017-08-09 17:34:15 .     Den     Error2 message text"));
+        firstJournal.add(new Record("2017-08-16 12:36:15 !     Nick  Error3 message text"));
         firstJournal.add(new Record("2017-08-02 05:38:15 !!!!! Rick Error4 message text"));
-        firstJournal.add(new Record("2017-08-05 01:45:15 .     Tom  Error5 message text"));
+        firstJournal.add(new Record("2017-08-05 01:45:15 .     Tom    Error5 message text"));
         Record singleRecord = new Record(new Date(), 2,"Sandra"," Error6 message text");
         firstJournal.add(singleRecord);
 

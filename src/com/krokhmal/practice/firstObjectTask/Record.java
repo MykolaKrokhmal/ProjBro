@@ -17,7 +17,7 @@ public class Record {
     private final int LOW_PRIORITY_VALUE    = 2;
     private final int HEIGHT_PRIORITY_VALUE = 3;
     private final int MAX_PRIORITY_VALUE    = 4;
-    private final int ARGUMENTS             = 4;
+    private final int ARGUMENTS_COUNT       = 4;
     private final int NO_SPACE              = -1;
 
     public Record(Date date, int priority, String source, String message) {
@@ -46,13 +46,9 @@ public class Record {
 
         record = record.trim();
 
-        while(record.contains("  ")){
-            record = record.replace("  ", " ");
-        }
-
-        String[] parameter = new String[ARGUMENTS];
+        String[] parameter = new String[ARGUMENTS_COUNT];
         int index = 0;
-        for (int i = 0; i < ARGUMENTS; i++) {
+        for (int i = 0; i < ARGUMENTS_COUNT; i++) {
             index = record.indexOf(" ");
             if(index == NO_SPACE)
                 throw new IllegalArgumentException("Illegal input argument " + i);
@@ -134,10 +130,5 @@ public class Record {
 
     private String getMessage() {
         return this.message;
-    }
-
-    @Override
-    public Record clone(){
-        return new Record(new Date(this.date.getTime()), this.priority, this.source, this.message);
     }
 }
