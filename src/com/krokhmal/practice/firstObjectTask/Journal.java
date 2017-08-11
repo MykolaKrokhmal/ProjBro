@@ -148,9 +148,4 @@ public class Journal {
         }
         return string.toString();
     }
-
-    public static void main(String[] args) {
-
-
-    }
 }
