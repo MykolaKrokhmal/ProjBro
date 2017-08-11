@@ -14,7 +14,6 @@ public class Record {
     private final int LOW_PRIORITY_VALUE    = 2;
     private final int HEIGHT_PRIORITY_VALUE = 3;
     private final int MAX_PRIORITY_VALUE    = 4;
-    private final int MIN_WORDS_COUNT       = 5;
 
     public Record(Date date, int priority, String source, String message) {
         if (date == null)
@@ -49,6 +48,8 @@ public class Record {
     }
 
     private String[] parseString(String text){
+        final int MIN_WORDS_COUNT = 5;
+
         String[] word = text.trim().split("\\s+");
         if(word.length < MIN_WORDS_COUNT)
             throw new IllegalArgumentException("Incorrect string format");
@@ -73,6 +74,10 @@ public class Record {
         return new Date(this.date.getTime());
     }
 
+    private String getDateAsString() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(this.date);
+    }
+
     private void setDate(String date) {
         try {
             SimpleDateFormat inputDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -82,34 +87,6 @@ public class Record {
         } catch (ParseException exception) {
             throw new IllegalArgumentException("Illegal \"date\" format");
         }
-    }
-
-    private void setPriority(String priority) {
-        switch (priority) {
-            case "."    : this.priority = MIN_PRIORITY_VALUE;       break;
-            case "!"    : this.priority = LOW_PRIORITY_VALUE;       break;
-            case "!!!"  : this.priority = HEIGHT_PRIORITY_VALUE;    break;
-            case "!!!!!": this.priority = MAX_PRIORITY_VALUE;       break;
-            default     : throw new IllegalArgumentException("Illegal \"priority\" format");
-        }
-
-    }
-
-    private void setSource(String source) {
-        this.source = source;
-    }
-
-    private void setMessage(String message) {
-        this.message = message;
-    }
-
-    @Override
-    public String toString() {
-        return getDateAsString() + " " + getPriorityAsString() + " " + getSource() + " " + getMessage();
-    }
-
-    private String getDateAsString() {
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(this.date);
     }
 
     public Integer getPriority(){
@@ -129,11 +106,35 @@ public class Record {
         return symbol;
     }
 
+    private void setPriority(String priority) {
+        switch (priority) {
+            case "."    : this.priority = MIN_PRIORITY_VALUE;       break;
+            case "!"    : this.priority = LOW_PRIORITY_VALUE;       break;
+            case "!!!"  : this.priority = HEIGHT_PRIORITY_VALUE;    break;
+            case "!!!!!": this.priority = MAX_PRIORITY_VALUE;       break;
+            default     : throw new IllegalArgumentException("Illegal \"priority\" format");
+        }
+
+    }
+
     public String getSource() {
         return this.source;
     }
 
+    private void setSource(String source) {
+        this.source = source;
+    }
+
     private String getMessage() {
         return this.message;
+    }
+
+    private void setMessage(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return getDateAsString() + " " + getPriorityAsString() + " " + getSource() + " " + getMessage();
     }
 }
