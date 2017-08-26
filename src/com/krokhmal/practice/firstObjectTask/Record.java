@@ -1,77 +1,158 @@
 package com.krokhmal.practice.firstObjectTask;
 
+import com.sun.org.apache.xpath.internal.operations.Equals;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-public class Record {
+public class Record  {
     private Date date;
-    private int priority;
+    private Priority priority;
     private String source;
     private String message;
-    private final int MIN_PRIORITY_VALUE    = 1;
-    private final int LOW_PRIORITY_VALUE    = 2;
-    private final int HEIGHT_PRIORITY_VALUE = 3;
-    private final int MAX_PRIORITY_VALUE    = 4;
 
-    public Record(Date date, int priority, String source, String message) {
-        if (date == null)
-            throw new IllegalArgumentException("Parameter \"date\" can not be null");
-
-        if (priority < MIN_PRIORITY_VALUE || priority > MAX_PRIORITY_VALUE)
-            throw new IllegalArgumentException("Parameter \"priority\" must be in range 1..4");
-
-        if (source == null || source.trim().isEmpty() || source.contains(" "))
-            throw new IllegalArgumentException("Parameter \"source\" must be without spaces, not null and not empty");
-
-        if (message == null || message.trim().isEmpty() || message.contains(System.lineSeparator()))
-            throw new IllegalArgumentException("Parameter \"message\" can not contain line separator, be null or empty");
-
+    public Record(Date date, Priority priority, String source, String message) {
         this.date       = new Date(date.getTime());
         this.priority   = priority;
         this.source     = source.trim();
         this.message    = message.trim();
     }
 
-    public Record(String record) {
+    public static Record add(String recordString){
+        if (recordString == null || recordString.trim().isEmpty())
+            throw new IllegalArgumentException("Input argument can not be null or empty");
 
-        if (record == null || record.trim().isEmpty())
-            throw new IllegalArgumentException("Illegal input argument");
-
-        String[] parameter = parseString(record);
-
-        setDate(parameter[0]);
-        setPriority(parameter[1]);
-        setSource(parameter[2]);
-        setMessage(parameter[3]);
-    }
-
-    private String[] parseString(String text){
-        final int MIN_WORDS_COUNT = 5;
-
-        String[] word = text.trim().split("\\s+");
-        if(word.length < MIN_WORDS_COUNT)
-            throw new IllegalArgumentException("Incorrect string format");
-
-        String[] parameter = new String[4];
-
-        parameter[0] = word[0] + " " + word[1];
-        parameter[1] = word[2];
-        parameter[2] = word[3];
-
-        StringBuilder message = new StringBuilder();
-        for (int i = 4; i < word.length; i++) {
-            message.append(word[i]);
-            message.append(" ");
-        }
-        parameter[3] = message.toString().trim();
-
-        return parameter;
+        String checkedRecordString = getHandledString(recordString);
+        return new Record(checkedRecordString);
     }
 
     public Date getDate(){
         return new Date(this.date.getTime());
+    }
+
+    public Priority getPriority(){
+        return this.priority;
+    }
+
+    public String getSource() {
+        return this.source;
+    }
+
+    public String getMessage(){
+        return this.message;
+    }
+
+    @Override
+    public String toString() {
+        return getDateAsString() + " " + this.priority.getSignature() + " " + getSource() + " " + this.message;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+
+        Record comparable = (Record) obj;
+        return (this.date.getTime() == comparable.date.getTime() && this.priority == comparable.priority &&
+                this.source.equals(comparable.source) && this.message.equals(comparable.message));
+    }
+
+    private Record(String record) {
+        final int LAST_DATE_TIME_SYMBOL = 19;
+        final int FIRST_PRIORITY_SYMBOL = 20;
+        final int LAST_PRIORITY_SYMBOL = 25;
+        final int FIRST_SOURCE_SYMBOL = 26;
+        final int LAST_SOURCE_SYMBOL = record.indexOf(" ",26);
+        final int FIRST_MESSAGE_SYMBOL = record.indexOf(" ",27) + 1;
+
+        setDate(record.substring(0, LAST_DATE_TIME_SYMBOL));
+        this.priority = Priority.fromString(record.substring(FIRST_PRIORITY_SYMBOL, LAST_PRIORITY_SYMBOL));
+        this.source = record.substring(FIRST_SOURCE_SYMBOL, LAST_SOURCE_SYMBOL);
+        this.message = record.substring(FIRST_MESSAGE_SYMBOL, record.length());
+    }
+
+    private static String getHandledString(String inputString){
+        final int MIN_WORDS_COUNT = 5;
+        final int DATE_WORD_NUMBER = 0;
+        final int TIME_WORD_NUMBER = 1;
+        final int PRIORITY_WORD_NUMBER = 2;
+        final int SOURCE_WORD_NUMBER = 3;
+        final int MESSAGE_FIRST_WORD = 4;
+
+        String[] wordsSet = inputString.trim().split("\\s+");
+        if(wordsSet.length < MIN_WORDS_COUNT)
+            throw new IllegalArgumentException("Incorrect string format");
+
+        StringBuilder message = new StringBuilder();
+        String dateTimeString = wordsSet[DATE_WORD_NUMBER] + " " + wordsSet[TIME_WORD_NUMBER];
+
+        if(isCorrectDateFormat(dateTimeString)) {
+            message.append(dateTimeString);
+            message.append(" ");
+        }
+        String priorityString = getFormattedPriority(wordsSet[PRIORITY_WORD_NUMBER]);
+        if(isCorrectPriorityFormat(priorityString)) {
+            message.append(priorityString);
+            message.append(" ");
+        }
+        message.append(wordsSet[SOURCE_WORD_NUMBER]);
+        message.append(" ");
+
+        for (int i = MESSAGE_FIRST_WORD; i < wordsSet.length; i++) {
+            message.append(wordsSet[i]);
+            message.append(" ");
+        }
+        return message.toString().trim();
+    }
+
+    private static boolean isCorrectDateFormat(String dateString){
+        try {
+            SimpleDateFormat inputDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            inputDate.setLenient(false);
+            inputDate.parse(dateString);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    private static boolean isCorrectPriorityFormat(String priorityString){
+        try {
+            Priority.fromString(priorityString);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    private static String getFormattedPriority(String priorityString) {
+        switch(priorityString){
+            case "."    :
+                return ".    ";
+            case "!"    :
+                return "!    ";
+            case "!!!"  :
+                return "!!!  ";
+            case "!!!!!":
+                return "!!!!!";
+            default     : throw new IllegalArgumentException("Illegal \"priority\" format");
+        }
+    }
+
+    private static Date getDateFromString(String dateString){
+        try {
+            SimpleDateFormat inputDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            inputDate.setLenient(false);
+            return inputDate.parse(dateString);
+
+        } catch (ParseException exception) {
+            throw new IllegalArgumentException("Illegal \"date\" format");
+        }
     }
 
     private String getDateAsString() {
@@ -79,62 +160,6 @@ public class Record {
     }
 
     private void setDate(String date) {
-        try {
-            SimpleDateFormat inputDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            inputDate.setLenient(false);
-            this.date = inputDate.parse(date);
-
-        } catch (ParseException exception) {
-            throw new IllegalArgumentException("Illegal \"date\" format");
-        }
-    }
-
-    public Integer getPriority(){
-        return this.priority;
-    }
-
-    private String getPriorityAsString() {
-
-        String symbol;
-        switch (this.priority) {
-            case MIN_PRIORITY_VALUE     :   symbol = ".    "; break;
-            case LOW_PRIORITY_VALUE     :   symbol = "!    "; break;
-            case HEIGHT_PRIORITY_VALUE  :   symbol = "!!!  "; break;
-            case MAX_PRIORITY_VALUE     :   symbol = "!!!!!"; break;
-            default                     :   symbol = "     "; break;
-        }
-        return symbol;
-    }
-
-    private void setPriority(String priority) {
-        switch (priority) {
-            case "."    : this.priority = MIN_PRIORITY_VALUE;       break;
-            case "!"    : this.priority = LOW_PRIORITY_VALUE;       break;
-            case "!!!"  : this.priority = HEIGHT_PRIORITY_VALUE;    break;
-            case "!!!!!": this.priority = MAX_PRIORITY_VALUE;       break;
-            default     : throw new IllegalArgumentException("Illegal \"priority\" format");
-        }
-
-    }
-
-    public String getSource() {
-        return this.source;
-    }
-
-    private void setSource(String source) {
-        this.source = source;
-    }
-
-    private String getMessage() {
-        return this.message;
-    }
-
-    private void setMessage(String message) {
-        this.message = message;
-    }
-
-    @Override
-    public String toString() {
-        return getDateAsString() + " " + getPriorityAsString() + " " + getSource() + " " + getMessage();
+        this.date = getDateFromString(date);
     }
 }

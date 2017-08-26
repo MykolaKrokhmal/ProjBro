@@ -2,7 +2,7 @@ package com.krokhmal.tests.classes2;
 
 public class GrandClass extends RootClass{
     private String param1 = setParam("Grand.","Param1");
-    private static String param2 = setStaticParam("Grand.","Param2");
+    private static String param2 = setStaticParam("Grand.","Static Param2");
     private final String param3;
 
     public String setParam(String f, String s){
@@ -16,6 +16,6 @@ public class GrandClass extends RootClass{
 
     public GrandClass(String name){
         System.out.println("   Grand.Constructor " + name);
-        param3 = setParam("Grand.","FinalParam3");
+        param3 = setParam("Grand.","Final Param3");
     }
 }

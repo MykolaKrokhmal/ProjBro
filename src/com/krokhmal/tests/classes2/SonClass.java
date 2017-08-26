@@ -7,6 +7,8 @@ import java.util.ArrayList;
  */
 public class SonClass extends GrandClass {
     private final String param1 = setParam("      Son.Param1");
+    private final static String param2 = setStaticParam("      Son.","Static Param2");
+
     public SonClass(){
         super("CreateGrandClass");
         System.out.println("      Son.Constructor ");
@@ -14,6 +16,7 @@ public class SonClass extends GrandClass {
     }
 
     public static void main(String[] args) {
-        new SonClass();
+        Object s = new SonClass();
+        System.out.println(s.getClass());
     }
 }
