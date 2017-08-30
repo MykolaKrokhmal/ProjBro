@@ -133,13 +133,13 @@ public class Record  {
     private static String getFormattedPriority(String priorityString) {
         switch(priorityString){
             case "."    :
-                return ".    ";
+                return Priority.MIN.getSignature();
             case "!"    :
-                return "!    ";
+                return Priority.LOW.getSignature();
             case "!!!"  :
-                return "!!!  ";
+                return Priority.HIGH.getSignature();
             case "!!!!!":
-                return "!!!!!";
+                return Priority.MAX.getSignature();
             default     : throw new IllegalArgumentException("Illegal \"priority\" format");
         }
     }
